@@ -1,0 +1,129 @@
+﻿
+        body{
+            margin-top: 0;
+            background-color: #006699;
+        }
+
+        #header{
+            width: 100%;
+            height:120px;
+
+
+        }
+        #logo{
+            display: inline;
+            position: absolute;
+            width:10%;
+            height: inherit;
+            top: 0;
+            left: 45%;
+        }
+        #upperbar{
+            height: 60px;
+            width: 100%;
+            background-color: #000000;
+
+        }
+        #underbar{
+            height: 60px;
+
+
+        }
+
+
+        #upperbar .welcome{
+            display:inline-block;
+            float:left;
+            margin-left:20px;
+            width:20%;
+            height: inherit;
+            /*border: 2px solid;*/
+            /*border-color:greenyellow;*/
+        }
+        #upperbar .menubutton{
+            display: inline-block;
+            float:right;
+            margin-right:20px;
+            width:20%;
+            height: inherit;
+            /*border: 2px solid;*/
+            /*border-color:greenyellow;*/
+            text-align: center;
+
+        }
+
+        #upperbar .menubutton img{
+          max-height: 80%;
+           max-width:  80%;
+
+        }
+        #body{
+            width:80%;
+            margin: 50px auto;
+        }
+        #footer{
+            margin-top: 50px;
+            width: 100%;
+            border: 2px solid;
+            border-color:red;
+        }
+        #footerwrapper{
+            margin: 0 auto;
+            text-align: center;
+            border: 2px solid;
+            border-color:wheat;
+        }
+
+
+
+
+        /* tag css */
+        img{max-height: 100%;max-width: 100%;
+           vertical-align:middle;
+        }
+        /*div {*/
+            /*border: 2px solid;*/
+            /*border-color:red;*/
+        /*}*/
+        h1 { font-family: 'Comfortaa', cursive;
+        color: whitesmoke;}
+
+             #heading{text-align: center;
+        }
+        #intro{
+            background-color: #3399cc;
+            margin: 0 auto;
+            border: 1px solid;
+            border-color: #ffffff;
+        }
+        #contentwrapper{
+            margin-top: 10px;
+            background-color: #3399cc;
+            height: 450px;
+            border: 1px solid;
+            border-color: #ffffff;
+        
+        }
+            #contentwrapper div{
+                margin-top:3px;
+            margin-left:0px;
+        
+        }
+
+        /* css for homebox*/
+        .homebox
+        {
+            display:inline-block;
+            margin-left:0px;
+       
+
+        }
+        .homebox div
+        {
+           width: 200px;
+    padding: 5px;
+    border: 5px solid navy;
+    display:inline-block;
+ height:400px;
+     overflow:hidden;
+        }

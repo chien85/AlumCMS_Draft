@@ -1,0 +1,179 @@
+﻿@model Users.Models.Entities.Content
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+    <!-- TinyMCE Script Reference -->
+<script src="~/scripts/tinymce/tinymce.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script src="~/Content/uploadify/jquery.uploadify.js"></script>
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Uploadify/uploadify.css")" />
+<!-- Script to wire up your TinyMCE editor -->
+<script type="text/javascript">
+    tinyMCE.init({
+        // General options
+        mode: "textareas",
+        //theme: "simple",
+        // Theme options
+        //toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+
+
+    });
+    
+</script>
+<script type="text/javascript">
+        $(function () {
+            $('#file_upload').uploadify({
+                'swf': '@Url.Content("~/Content/Uploadify/uploadify.swf")',
+                'cancelImg': '~/Content/Uploadify/uploadify-cancel.png',
+                'uploader': '@Url.Action("Upload", "Content")',
+                'onUploadSuccess': function (file, data, response) {
+                    alert('The file ' + file.name + ' was successfully uploaded with a response of ' + response + ':' + data);
+                    var img = "<img style = 'height:80px;width:80px' src = '" + data + "' />";
+                    $("#uploaded").append("<img src='" + data + "' alt='Uploaded Image' />");
+                    tinyMCE.activeEditor.execCommand("mceInsertContent", true, img);
+                }
+
+            });
+        });
+</script>
+<script type="text/javascript">
+    {
+        $(document).ready(function () {
+            $("#Category").change(
+
+                function () {
+                    alert("Hello changed");
+                    var currentidcate = $(this).val();
+                    alert(currentidcate);
+                    var link = "LoadSubCate?idcate=" + currentidcate;
+                    alert(link);
+                    $.getJSON(link, function (itemData) {
+
+                        var select = $("#IdSubcategory");
+                        select.empty();
+                        alert(itemData[0].Text);
+                        $.each(itemData, function (index, data) {
+
+                            select.append($('<option/>', {
+                                value: data.Value,
+                                text: data.Text
+                            }))
+                        });
+
+                    });
+                });
+        })
+    }
+</script>
+
+
+
+
+
+<h2>Create</h2>
+
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3>Edit @Model.Title</h3>
+    </div>
+
+    @using (Html.BeginForm("Create", "Content",
+        FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        <div class="panel-body">
+            @Html.HiddenFor(m => m.IdContent)
+            <div class="form-group">
+                <div>
+
+                    @Html.DropDownList("Category", (SelectList)ViewBag.catelist)
+                    @Html.DropDownList("IdSubcategory", (SelectList)ViewBag.subcatelist)
+
+
+                </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Title</label>
+                    @Html.TextBox("Title", null, new { @class="form-control"})
+
+                </div>
+                <div class="form-group">
+                    <label>Byline</label>
+                    @Html.TextBox("Byline", null, new { @class = "form-control" })
+
+                </div>
+                <div class="form-group">
+                    <label>Teaser</label>
+                    @Html.TextBox("Teaser", null, new { @class = "form-control"})
+
+                </div>
+                <div class="form-group">
+                    <label>Body</label>
+
+
+                    @Html.TextArea("Body", null, new { @class = "form-control", rows = 20 })
+                    <div>
+                        Select Images to upload.
+                        <input type="file" name="file_upload" id="file_upload" />
+                    </div>
+                    <div id="uploaded">
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label>TagLine</label>
+                    @Html.TextBox("TagLine", null, new { @class = "form-control"})
+
+                </div>
+                <div class="form-group">
+                    <label>Creation Date</label>
+                    @Html.TextBox("CreationDate", @DateTime.Now.ToShortDateString(), new { @class = "form-control" })
+
+                </div>
+                <div class="form-group">
+                    <label>Updated Date</label>
+                    @Html.TextBox("UpdatedDate", @DateTime.Now.ToShortDateString(), new { @class = "form-control" })
+
+                </div>
+
+                <div class="form-group">
+                    <div style="position:relative;">
+                        <label>Image</label>
+                        <a class='btn' href='javascript:;'>
+                            Choose File...
+                            <input type="file" name="Image" size="40"
+                                   style="position:absolute;z-index:2;top:0;
+                            left:0;filter: alpha(opacity=0); opacity:0;
+                            background-color:transparent;color:transparent;"
+                                   onchange='$("#upload-file-info").html($(this).val());'>
+                        </a>
+                        <span class='label label-info' id="upload-file-info"></span>
+                    </div>
+                    @if (Model.ImageData == null)
+                {
+                <div class="form-control-static">No Image</div>
+                }
+                else
+                {
+                <img class="img-thumbnail" width="150" height="150"
+                     src="@Url.Action("GetImage", "Content",
+                        new { Model.IdContent })" />
+                }
+                </div>
+            </div>
+
+        <div class="panel-footer">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            @Html.ActionLink("Cancel and return to List", "Index", null, new
+       {
+           @class = "btn btn-default"
+       })
+        </div>
+    }
+</div>
+

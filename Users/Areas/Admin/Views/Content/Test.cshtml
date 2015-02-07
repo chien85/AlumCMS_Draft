@@ -1,0 +1,66 @@
+﻿@using Users.Models.Entities
+@{
+    ViewBag.Title = "Test";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="~/Content/uploadify/jquery.uploadify.js"></script>
+
+<script type="text/javascript">
+    {
+        $(document).ready(function () {
+            $("#Category").change(
+                
+                function () {
+                    alert("Hello changed");
+                    var currentidcate = $(this).val();
+                    alert(currentidcate);
+                    var link = "LoadSubCate?idcate=" + currentidcate;
+                    alert(link);
+                    $.getJSON(link, function (itemData) {
+
+                           var select = $("#Subcategory");
+                           select.empty();
+                           alert(itemData[0].Text);
+                           $.each(itemData, function (index, data) {
+                               
+                               select.append($('<option/>', {
+                                   value: data.Value,
+                                   text: data.Text
+                               }))
+                           });
+                           
+                       });
+            });
+        })
+    }
+</script>
+        <h2>Test</h2>
+<script type="text/javascript">
+        $(function () {
+            $('#file_upload').uploadify({
+                'swf': '@Url.Content("~/Content/Uploadify/uploadify.swf")',
+                'cancelImg': '~/Content/Uploadify/uploadify-cancel.png',
+                'uploader': '@Url.Action("Upload", "Content")',
+                'onUploadSuccess' : function(file, data, response) {
+                     $("#uploaded").append("<img src='" + data + "' alt='Uploaded Image' />");
+                }
+
+            });
+        });
+</script>
+        <div>
+
+        @Html.DropDownList("Category", (SelectList)ViewBag.catelist)
+            @Html.DropDownList("Subcategory", (SelectList)ViewBag.subcatelist)
+
+
+</div>
+
+<div>
+    Click Select files to upload files.
+    <input type="file" name="file_upload" id="file_upload" />
+</div>
+<div id="uploaded">
+</div>
+
