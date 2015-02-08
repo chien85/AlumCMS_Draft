@@ -10,7 +10,7 @@ namespace Users.Controllers {
     public class HomeController : Controller {
 
         IRepo myrepo;
-        public int PageSize = 2;
+        public int PageSize = 4;
 
         public HomeController(IRepo repopara)
         {
@@ -33,8 +33,9 @@ namespace Users.Controllers {
             
             ArticlesForHomeControllerModel articleforhome = new ArticlesForHomeControllerModel
             {
-                articles = myrepo.Contents,
-                Intro=mysetting.General.SiteName
+                articles = myrepo.Contents.OrderBy(x=>x.IdContent).Take(6),
+                Intro=mysetting.General.SiteName,
+                
 
             
             };
@@ -56,10 +57,10 @@ namespace Users.Controllers {
             return View(content);
         }
       
-        public ActionResult Pages(int idcategory, int idsub, int page=1)
+        public ActionResult Pages(int idcategory, int? idsub, int page=1)
         {
             
-            if(idsub!=0)// it means that has format idcate/idsub
+            if(idsub!=null && idsub!=0)// it means that has format idcate/idsub
             {
                 ArticlesForPages myarticles = new ArticlesForPages();
 
@@ -87,20 +88,41 @@ namespace Users.Controllers {
                 myarticles.articles=
                  myrepo.Contents.Where(x => idsubcategory.Contains(x.IdSubcategory)).Skip((page - 1) * PageSize).Take(PageSize);
                 myarticles.category = myrepo.Categories.FirstOrDefault(x => x.Idcategory == idcategory);
-                                myarticles.category = myrepo.Categories.FirstOrDefault(x => x.Idcategory == idcategory);
                                 myarticles.subcategory = null;
 
-                                PagingInfo paging = new PagingInfo
+                                PagingInfo mypaging = new PagingInfo
                                 {
                                     CurrentPage = page,
                                     ItemsPerPage = PageSize,
                                     TotalItems = myrepo.Contents.Where(x=>idsubcategory.Contains(x.IdSubcategory)).Count()
 
                                 };
-                                myarticles.PagingInfo = paging;
+                                myarticles.PagingInfo = mypaging;
                 return View(myarticles);
             }
         }
-     
+        public ActionResult Cates(int idcategory, int page = 1)
+        {
+                        
+                ArticlesForPages myarticles = new ArticlesForPages();
+
+                int?[] idsubcategory = myrepo.CatSubCats.Where(x => x.Idcategory == idcategory).Select(x => x.IdSubcategory).ToArray();
+
+                myarticles.articles =
+                 myrepo.Contents.Where(x => idsubcategory.Contains(x.IdSubcategory)).Skip((page - 1) * PageSize).Take(PageSize);
+                myarticles.category = myrepo.Categories.FirstOrDefault(x => x.Idcategory == idcategory);
+                myarticles.subcategory = null;
+
+                PagingInfo mypaging = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = myrepo.Contents.Where(x => idsubcategory.Contains(x.IdSubcategory)).Count()
+
+                };
+                myarticles.PagingInfo = mypaging;
+                return View(myarticles);
+            
+        }
     }
 }

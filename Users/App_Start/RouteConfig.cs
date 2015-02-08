@@ -31,11 +31,17 @@ namespace Users
                 defaults: new { controller = "Home", action = "Pages" },
                 constraints: new { page = @"\d+" }
             );
+            routes.MapRoute(
+              name: "Cates",
+              url: "Home/Cates/{idcategory}",
+              defaults: new { controller = "Home", action = "Cates",  page = 1 }
+          );
 
             routes.MapRoute(
-              name: "Default3",
-              url: "Home/Pages/{idcategory}/page{page}",
-              defaults: new { controller = "Home", action = "Pages", idsub = 0, page=1 }
+              name: "PageOnlyCate",
+              url: "Home/Cates/{idcategory}/page{page}",
+              defaults: new { controller = "Home", action = "Cates", page=1 },
+              constraints: new { page = @"\d+" }
           );
 
             routes.MapRoute(

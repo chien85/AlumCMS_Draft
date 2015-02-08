@@ -428,6 +428,7 @@
     <Content Include="Views\Account\LoginBox.cshtml" />
     <Content Include="Views\Shared\_LayoutArticle.cshtml" />
     <Content Include="Views\Nav\BottomFlexMenu.cshtml" />
+    <Content Include="Views\Home\Cates.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
